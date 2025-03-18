@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="StyleLoco: Generative Adversarial Distillation for Natural Humanoid Robot Locomotion">
+  <meta name="keywords" content="Humanoid Locomotion, Whole-body Control, Imitation Learning, Distillation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    StyleLoco: Generative Adversarial Distillation for Natural Humanoid Robot Locomotion
+  </title>
+
+  <link rel="apple-touch-icon" sizes="57x57"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="60x60"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-60x60.png" />
+  <link rel="apple-touch-icon" sizes="72x72"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-152x152.png" />
+  <link rel="apple-touch-icon" sizes="180x180"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-180x180.png" />
+
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-196x196.png"
+    sizes="196x196" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-192x192.png"
+    sizes="192x192" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-128.png" sizes="128x128" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-16x16.png" sizes="16x16" />
+
+  <link rel="mask-icon" href="//www-media.stanford.edu/assets/favicon/safari-pinned-tab.svg" color="#ffffff">
+  <meta name="application-name" content="Stanford University" />
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <meta name="msapplication-TileImage" content="//www-media.stanford.edu/assets/favicon/mstile-144x144.png" />
+  <meta name="msapplication-square70x70logo" content="//www-media.stanford.edu/assets/favicon/mstile-70x70.png" />
+  <meta name="msapplication-square150x150logo" content="//www-media.stanford.edu/assets/favicon/mstile-150x150.png" />
+  <meta name="msapplication-square310x310logo" content="//www-media.stanford.edu/assets/favicon/mstile-310x310.png" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ38WT2YPD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-QZ38WT2YPD');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://kit.fontawesome.com/19914a84eb.js" crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<section class="hero is-link is-fullheight video" style="overflow: hidden; position:relative;">
+  <div class="hero-video" style="height: 100%; width: 177.77777778vh; min-width: 100%;min-height: 56.25vw;">
+    <video playsinline autoplay muted loop>
+      <source src=" ./static/videos/teaser_video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay"></div>
+  <!-- Hero head: will stick at the top -->
+  <div class="hero-head is-hidden-mobile">
+    <header class="navbar">
+      <div class="container is-size-5">
+        <div class="navbar-menu">
+          <div class="navbar-end">
+            <a class="navbar-item pl-4 pr-4" href="./static/StyleLoco_paper.pdf">
+              <span class="icon" style="margin-right:5px;">
+                <img src="./static/images/pdf.svg" alt="PDF" />
+              </span>
+              <span>Paper</span>
+            </a>
+            <a class="navbar-item  pl-4 pr-4" href="https://arxiv.org/abs/2407.10353">
+              <span class="icon" style="margin-right:5px;">
+                <img src="./static/images/arxiv.svg" alt="ArXiv" />
+              </span>
+              <span>arXiv</span> </a>
+            <a href="https://youtu.be/4Bp0q3xHTxE" class="navbar-item  pl-4 pr-4">
+              <span class="icon" style="margin-right:5px;">
+                <img src="./static/images/youtube.svg" alt="Youtube" />
+              </span>
+              <span>Video</span> </a>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- Hero content: will be in the middle -->
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title is-1 publication-title is-size-1-mobile" style="font-size: 12rem;">
+        StyleLoco
+      </h1>
+      <h1 class="subtitle is-1 publication-title is-size-4-mobile" style="font-size: 4rem;">
+        <span class="title-line">Generative Adversarial Distillation</span>
+        <span class="title-line">for Natural Humanoid Robot Locomotion</span>
+      </h1>
+      <style>
+        .title-line {
+          display: block;
+        }
+      </style>
+      
+      <div class="column has-text-centered is-hidden-tablet">
+        <div class="publication-links">
+          <!-- PDF Link. -->
+          <span class="link-block">
+            <a href="./static/StyleLoco_paper.pdf" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <img src="./static/images/pdf.svg" alt="PDF" />
+              </span>
+              <span>Paper</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="https://arxiv.org/abs/2407.10353" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <img src="./static/images/arxiv.svg" alt="ArXiv" />
+              </span>
+              <span>arXiv</span>
+            </a>
+          </span>
+          <!-- Video Link. -->
+          <span class="link-block">
+            <a href="https://youtu.be/4Bp0q3xHTxE" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <img src="./static/images/youtube.svg" alt="Youtube" />
+              </span>
+              <span>Video</span>
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Hero footer: will stick at the bottom -->
+  <div class="hero-foot is-hidden-mobile">
+    <nav class="tabs is-boxed is-fullwidth is-size-5">
+      <ul>
+        <!-- <li><a href="#lafan">Motion Demonstrations</a></li> -->
+        <li><a href="#GAD">Generative Adversarial Distillation</a></li>
+        <li><a href="#style">Stylized Locomotion</a></li>
+        <li><a href="#transition">Natural gait transitions</a></li>
+      </ul>
+    </nav>
+  </div>
+</section>
+
+
+<section class="section is-medium" id="overview">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths has-text-justified is-hidden-mobile">
+        <h2 class="subtitle ">
+          We introduce <strong>StyleLoco</strong>, a novel two-stage framework that bridges this gap through 
+          a <strong>Generative Adversarial Distillation (GAD)</strong> process. 
+          Our framework begins by training a teacher policy using reinforcement learning to achieve agile and dynamic locomotion.
+          It then employs a <strong>multi-discriminator</strong> architecture, 
+          where distinct discriminators concurrently extract skills from both the teacher policy and motion capture data. 
+          This approach effectively combines the agility of reinforcement learning 
+          with the natural fluidity of human-like movements 
+          while mitigating the instability issues commonly associated with adversarial training.
+        </h2>
+      </div>
+
+      <div class="column is-four-fifths is-hidden-tablet has-text-justified-mobile">
+        <p>
+          We introduce <strong>StyleLoco</strong>, a novel two-stage framework that bridges this gap through 
+          a <strong>Generative Adversarial Distillation (GAD)</strong> process. 
+          Our framework begins by training a teacher policy using reinforcement learning to achieve agile and dynamic locomotion.
+          It then employs a <strong>multi-discriminator</strong> architecture, 
+          where distinct discriminators concurrently extract skills from both the teacher policy and motion capture data. 
+          This approach effectively combines the agility of reinforcement learning 
+          with the natural fluidity of human-like movements 
+          while mitigating the instability issues commonly associated with adversarial training.
+        </p>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="video">
+  <div class="container is-max-desktop">
+    <h2 class="title is-1 has-text-centered is-size-4-mobile">Demonstrations Video</h2>
+    <iframe width="100%" style="aspect-ratio: 16 / 9;" src="
+      https://www.youtube.com/embed/4Bp0q3xHTxE?si=ocAPm8KVAz-RZK59" title="StyleLoco Demo Video"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+</section>
+
+<!-- <section class="section is-small" id="lafan">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+
+        <h2 class="title is-1 has-text-centered is-size-4-mobile">LaFAN1 Retarget Data Selection</h2>
+        <div class="content">
+          <p>
+            <a href="https://github.com/ubisoft/ubisoft-laforge-animation-dataset?tab=readme-ov-file">LaFAN1</a> is a motion capture dataset, 
+            and the retarget data used in our work is sourced from <a href="https://huggingface.co/datasets/unitreerobotics/LAFAN1_Retargeting_Dataset">Unitree</a>.
+          </p>
+        </div>
+
+        <div class="content">
+          <p>
+            We select stylized motion clips as the demonstrations for student policy.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- <video autoplay muted loop playsinline width="100%">
+  <source src="./static/videos/umi-grid-small.mp4" type="video/mp4">
+</video> -->
+
+
+<section class="section is-small" id="GAD">
+  <div class="container is-max-desktop">
+
+    <h2 class="title is-1 has-text-centered is-size-4-mobile">Generative Adversarial Distillation</h2>
+    <div class="content has-text-justified">
+      <p>
+        The core innovation of StyleLoco is our <strong>GAD</strong> framework, 
+        which synthesizes natural and adaptive behaviors from two complementary sources: 
+        <strong>a well-trained teacher policy</strong> and <strong>a reference motion dataset</strong>. 
+        As illustrated in figure, 
+        GAD trains a student policy alongside <strong>two AMP-style discriminators</strong>. 
+        Each discriminator evaluates the student's generated state transitions against one source of reference motions: 
+        either the teacher policy or the motion dataset.
+      </p>
+    </div>
+    <img src="./static/images/overview.png" alt="overview" />
+  </div>
+</section>
+
+
+
+
+<section class="section is-small" id="style">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths is-centered">
+        <h2 class="title is-1 has-text-centered is-size-4-mobile">Stylized Locomotion
+        </h2>
+
+
+        <div class="content has-text-justified">
+          <p>
+            We validate our method's capability to combine robust locomotion skills with distinct motion styles
+            by implementing the '<strong>arms-akimbo</strong> walking' maneuver on the Unitree H1 full-size humanoid platform.
+          </p>
+
+        </div>
+
+        <div style="
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        margin: 40px auto;
+        max-width: 1200px;
+      ">
+        <!-- 第一个视频 -->
+        <div style="flex: 1; min-width: 400px;">
+          <h3 class="has-text-centered" style="margin-bottom: 1rem; font-size: 1.25rem;">Motion Demonstration</h3>
+          <div style="
+            position: relative; 
+            padding-top: 56.25%;  /* 修正为真正的16:9比例 */
+            background: #000;    /* 添加背景色填充空白区域 */
+          ">
+            <video autoplay muted loop playsinline 
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;  /* 修改为contain保持完整显示 */
+                ">
+              <source src="./static/videos/style_rerun_1.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- 第二个视频 -->
+        <div style="flex: 1; min-width: 400px;">
+          <h3 class="has-text-centered" style="margin-bottom: 1rem; font-size: 1.25rem;">Simulation</h3>
+          <div style="
+            position: relative;
+            padding-top: 56.25%;  /* 修正比例 */
+            background: #000;">
+            <video autoplay muted loop playsinline 
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;">
+              <source src="./static/videos/style_sim_1.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+
+        <div style="flex: 1; min-width: 400px;">
+          <h3 class="has-text-centered" style="margin-bottom: 1rem; font-size: 1.25rem;">Real Robot</h3>
+          <div style="
+            position: relative;
+            padding-top: 56.25%;  /* 修正比例 */
+            background: #000;">
+            <video autoplay muted loop playsinline 
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;">
+              <source src="./static/videos/style_real_1.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="column is-centered">
+
+        <div class="content has-text-justified">
+          <p>
+            Deploying asymmetric <strong>limping</strong> gaits on the Unitree H1 humanoid poses significant challenges in dynamic stability maintenance, 
+          yet our method enables the student policy to move with the distinctive limp characteristics.
+          </p>
+
+        </div>
+
+        <div style="
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        margin: 40px auto;
+        max-width: 1200px;
+      ">
+        <!-- 第一个视频 -->
+        <div style="flex: 1; min-width: 400px;">
+          <h3 class="has-text-centered" style="margin-bottom: 1rem; font-size: 1.25rem;">Motion Demonstration</h3>
+          <div style="
+            position: relative; 
+            padding-top: 56.25%;  /* 修正为真正的16:9比例 */
+            background: #000;    /* 添加背景色填充空白区域 */
+          ">
+            <video autoplay muted loop playsinline 
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;  /* 修改为contain保持完整显示 */
+                ">
+              <source src="./static/videos/style_rerun_2.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <!-- 第二个视频 -->
+        <div style="flex: 1; min-width: 400px;">
+          <h3 class="has-text-centered" style="margin-bottom: 1rem; font-size: 1.25rem;">Simulation</h3>
+          <div style="
+            position: relative;
+            padding-top: 56.25%;  /* 修正比例 */
+            background: #000;">
+            <video autoplay muted loop playsinline 
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;">
+              <source src="./static/videos/style_sim_2.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+
+        <div style="flex: 1; min-width: 400px;">
+          <h3 class="has-text-centered" style="margin-bottom: 1rem; font-size: 1.25rem;">Real Robot</h3>
+          <div style="
+            position: relative;
+            padding-top: 56.25%;  /* 修正比例 */
+            background: #000;">
+            <video autoplay muted loop playsinline 
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;">
+              <source src="./static/videos/style_real_2.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+
+
+
+        <div class="content has-text-justified">
+          <p>
+            While the reference '<strong>arms-akimbo</strong>' motion in the LaFAN1 dataset exhibits <strong>limited directional diversity</strong> 
+            (forward: 100% vs. lateral & backward: 0%),
+            our student policy trained with GAD demonstrates emerge <strong>omnidirectional</strong> capability and extrodinary <strong>robustness</strong>.
+          </p>
+        </div>
+
+        <!-- 视频容器 -->
+        <div style="
+          display: flex;
+          gap: 30px;
+          justify-content: center;
+          margin: 40px auto;
+          max-width: 1200px;  /* 控制最大宽度 */
+        ">
+          <!-- 第一个视频 -->
+          <div style="flex: 1; min-width: 400px;">
+            <h3 class="has-text-centered" style="margin-bottom: 1rem; font-size: 1.25rem;">Omnidirection</h3>
+            <div style="position: relative; padding-top: 75%;"> <!-- 保持16:9比例 -->
+              <video autoplay muted loop playsinline 
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: contain;">
+                <source src="./static/videos/omnidirection_2x.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+          <!-- 第二个视频 -->
+          <div style="flex: 1; min-width: 400px;">
+            <h3 class="has-text-centered" style="margin-bottom: 1rem; font-size: 1.25rem;">Robustness</h3>
+            <div style="position: relative; padding-top: 75%;"> <!-- 保持16:9比例 -->
+              <video autoplay muted loop playsinline 
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: contain;">
+                <source src="./static/videos/robustness.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section is-small" id="transition">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <h2 class="title is-1 has-text-centered is-size-4-mobile">Natural Gait Transition</h2>
+        <h2 class="title is-1 has-text-centered is-size-4-mobile">and Outdoor Evaluations !</h2>
+        <div class="content">
+          <p>
+            By combining several gait patterns in different velocity ranges and involving omnidirectional teacher policy, 
+            the learned controller attains robust omnidirectional stylized locomotion with natural gait transitions.
+            Our outdoor real robot experiments are conducted on low-friction snowy surfaces and uneven grassland 
+            which is extremely challenging for locomotion!
+          </p>
+        </div>
+
+        <!-- 四宫格视频容器 -->
+        <div class="enhanced-video-grid">
+          <div class="video-wrapper">
+            <video autoplay muted loop playsinline>
+              <source src="./static/videos/gait_trans_mosaic.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-wrapper">
+            <video autoplay muted loop playsinline>
+              <source src="./static/videos/outdoors_clip_1.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-wrapper">
+            <video autoplay muted loop playsinline>
+              <source src="./static/videos/outdoors_clip_2.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-wrapper">
+            <video autoplay muted loop playsinline>
+              <source src="./static/videos/outdoors_clip_3.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* 仅针对四宫格的优化样式 */
+  .enhanced-video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin: 1.5rem -2rem; /* 负边距突破容器限制 */
+    width: calc(100% + 4rem); /* 扩大容器宽度 */
+  }
+  
+  .video-wrapper {
+    position: relative;
+    padding-top: 56.25%; /* 保持16:9比例 */
+    overflow: hidden;
+    background: #000; /* 黑边统一背景 */
+  }
+  
+  .video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 完整显示视频内容 */
+  }
+  
+  /* 大屏幕优化 */
+  @media screen and (min-width: 1024px) {
+    .enhanced-video-grid {
+      margin: 2rem -4rem;
+      width: calc(100% + 8rem);
+      gap: 1rem;
+    }
+  }
+  
+  /* 移动端适配 */
+  @media screen and (max-width: 768px) {
+    .enhanced-video-grid {
+      margin: 1rem -1rem;
+      width: calc(100% + 2rem);
+      grid-template-columns: 1fr;
+    }
+    
+    .video-wrapper {
+      padding-top: 75%; /* 改为4:3比例 */
+    }
+  }
+</style>
+
+
+<section class="section is-small">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 is-size-4-mobile">Our Team</h2>
+    <div class="container">
+      <!-- 统一使用单个flex容器 -->
+      <div class="publication-authors is-flex is-flex-wrap-nowrap is-justify-content-flex-start is-overflow-x-auto"
+          style="gap: 2rem; padding: 1rem 0;">
+        <!-- 成员1 -->
+        <div class="author-block has-text-centered" style="min-width: 150px;">
+          <figure class="image is-128x128 mx-auto">
+            <a href="https://www.cs.columbia.edu/~huy/">
+              <img class="is-rounded" src="./static/images/huy.jpg" alt="Le Ma">
+            </a>
+          </figure>
+          <div class="mt-2">
+            <a href="https://www.cs.columbia.edu/~huy/">Le Ma</a><sup>*,1</sup>
+          </div>
+        </div>
+
+        <!-- 成员2 -->
+        <div class="author-block has-text-centered" style="min-width: 150px;">
+          <figure class="image is-128x128 mx-auto">
+            <a href="https://yihuai-gao.github.io/">
+              <img class="is-rounded" src="./static/images/yihuai.png" alt="Ziyu Meng">
+            </a>
+          </figure>
+          <div class="mt-2">
+            <a href="https://yihuai-gao.github.io/">Ziyu Meng</a><sup>*,1,2</sup>
+          </div>
+        </div>
+
+        <!-- 成员3 -->
+        <div class="author-block has-text-centered" style="min-width: 150px;">
+          <figure class="image is-128x128 mx-auto">
+            <a href="https://zipengfu.github.io/">
+              <img class="is-rounded" src="./static/images/zipeng.jpg" alt="Tengyu Liu">
+            </a>
+          </figure>
+          <div class="mt-2">
+            <a href="https://zipengfu.github.io/">Tengyu Liu</a><sup>1</sup>
+          </div>
+        </div>
+
+        <!-- 成员4 -->
+        <div class="author-block has-text-centered" style="min-width: 150px;">
+          <figure class="image is-128x128 mx-auto">
+            <a href="https://www.jie-tan.net/">
+              <img class="is-rounded" src="./static/images/jie.jpg" alt="Yuhan Li">
+            </a>
+          </figure>
+          <div class="mt-2">
+            <a href="https://www.jie-tan.net/">Yuhan Li</a><sup>1,3</sup>
+          </div>
+        </div>
+
+        <!-- 成员5 -->
+        <div class="author-block has-text-centered" style="min-width: 150px;">
+          <figure class="image is-128x128 mx-auto">
+            <a href="https://shurans.github.io/">
+              <img class="is-rounded" src="./static/images/shuran.jpg" alt="Ran Song">
+            </a>
+          </figure>
+          <div class="mt-2">
+            <a href="https://shurans.github.io/">Ran Song</a><sup>2</sup>
+          </div>
+        </div>
+
+        <!-- 成员6 -->
+        <div class="author-block has-text-centered" style="min-width: 150px;">
+          <figure class="image is-128x128 mx-auto">
+            <a href="https://shurans.github.io/">
+              <img class="is-rounded" src="./static/images/shuran.jpg" alt="Wei Zhang">
+            </a>
+          </figure>
+          <div class="mt-2">
+            <a href="https://shurans.github.io/">Wei Zhang</a><sup>2</sup>
+          </div>
+        </div>
+
+        <!-- 成员7 -->
+        <div class="author-block has-text-centered" style="min-width: 150px;">
+          <figure class="image is-128x128 mx-auto">
+            <a href="https://shurans.github.io/">
+              <img class="is-rounded" src="./static/images/shuran.jpg" alt="Siyuan Huang">
+            </a>
+          </figure>
+          <div class="mt-2">
+            <a href="https://shurans.github.io/">Siyuan Huang</a><sup>1</sup>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+    /* 添加自定义滚动条样式 */
+    .publication-authors::-webkit-scrollbar {
+      height: 8px;
+      background-color: #f5f5f5;
+    }
+
+    .publication-authors::-webkit-scrollbar-thumb {
+      background: #dbdbdb;
+      border-radius: 4px;
+    }
+
+    /* 移动端优化 */
+    @media screen and (max-width: 768px) {
+      .publication-authors {
+        gap: 1rem;
+        padding-bottom: 0.5rem;
+      }
+      
+      .author-block {
+        min-width: 120px !important;
+      }
+      
+      .image.is-128x128 {
+        width: 96px;
+        height: 96px;
+      }
+    }
+    </style>
+    
+
+
+
+      <div class="publication-authors">
+        <span class="author-block"><sup>1</sup>National Key Laboratory of General Artificial Intelligence, BIGAI, </span>
+        <span class="author-block"><sup>2</sup>School of Control Science and Engineering, Shandong University, </span>
+        <span class="author-block"><sup>3</sup>Huazhong University of Science and Technology, </span>
+        <span class="author-block">*Equal contribution</span>
+      </div>
+
+
+    </div>
+    <br>
+
+    <pre class="is-hidden-mobile"><code>@inproceedings{ha2024umilegs,
+  title={{UMI} on Legs: Making Manipulation Policies Mobile with Manipulation-Centric Whole-body Controllers},
+  author={Huy Ha and Yihuai Gao and Zipeng Fu and Jie Tan and Shuran Song},
+  year={2024},
+  booktitle={Proceedings of the 2024 Conference on Robot Learning},
+}</code></pre>
+  </div>
+</section>
+
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            Website template modified from <a href="https://nerfies.github.io/">NeRFies</a> and <a
+              href="https://www.cs.columbia.edu/~huy/scalingup/">Scaling Up Distilling Down</a>.
+          </p>
+          <p>
+            This website is licensed under a <a rel="license"
+              href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow and modify the <a
+              href="https://github.com/nerfies/nerfies.github.io">source
+              code</a> of this website as long as
+            you link back to the <a href="https://nerfies.github.io/">NeRFies</a> page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
